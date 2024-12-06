@@ -1,6 +1,6 @@
 public class Queue<T> : IQueue<T>
 {
-    private List<T> queue = new List<T>;
+    private List<T> queue = new List<T>();
     public void Add(T item) 
     { queue.Add(item); }
     public T Delete() 
@@ -13,3 +13,4 @@ public class Queue<T> : IQueue<T>
     public bool isEmpty() { return queue.Count == 0; }
     public int Size() { return queue.Count; }
 }
+

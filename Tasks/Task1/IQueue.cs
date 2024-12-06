@@ -5,5 +5,5 @@ public interface IQueue<T>
     T Delete();
     T Choose();
     bool isEmpty();
-    int Size()
+    int Size();
 }
