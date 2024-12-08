@@ -1,45 +1,62 @@
-using System;
 namespace Task2
 {
-    public class PeopleDinner : Dineable
-{
-    private static int peopleCount = 0;
-
-    public override void ServeDinner(string carId)
+    public class PeopleDinner : IDineable
     {
-        peopleCount++;
-        Console.WriteLine($"Serving dinner to people in car {carId}. Total served: {peopleCount}");
+        public void ServeFood(string passengers)
+        {
+            if (passengers == "PEOPLE")
+            {
+                Console.WriteLine("Serving food to people.");
+            }
+            else
+            {
+                Console.WriteLine("This station only serves food to people.");
+            }
+        }
     }
-}
-public class RobotDinner : Dineable
-{
-    private static int robotCount = 0;
 
-    public override void ServeDinner(string carId)
+    public class RobotDinner : IDineable
     {
-        robotCount++;
-        Console.WriteLine($"Serving dinner to robots in car {carId}. Total served: {robotCount}");
+        public void ServeFood(string passengers)
+        {
+            if (passengers == "ROBOTS")
+            {
+                Console.WriteLine("Serving food to robots.");
+            }
+            else
+            {
+                Console.WriteLine("This station only serves food to robots.");
+            }
+        }
     }
-}
-public class GasStation : Refuelable
-{
-    private static int gasCarCount = 0;
 
-    public override void Refuel(string carId)
+    public class GasStation : IRefuelable
     {
-        gasCarCount++;
-        Console.WriteLine($"Refueling gas car {carId}. Total refueled: {gasCarCount}");
+        public void Refuel(string type)
+        {
+            if (type == "GAS")
+            {
+                Console.WriteLine("Refueling with Gas.");
+            }
+            else
+            {
+                Console.WriteLine("This station doesn't provide Electric fueling.");
+            }
+        }
     }
-}
-public class ElectricStation : Refuelable
-{
-    private static int electricCarCount = 0;
 
-    public override void Refuel(string carId)
+    public class ElectricStation : IRefuelable
     {
-        electricCarCount++;
-        Console.WriteLine($"Refueling electric car {carId}. Total refueled: {electricCarCount}");
+        public void Refuel(string type)
+        {
+            if (type == "ELECTRIC")
+            {
+                Console.WriteLine("Refueling with Electric.");
+            }
+            else
+            {
+                Console.WriteLine("This station doesn't provide Gas fueling.");
+            }
+        }
     }
-}
-
 }

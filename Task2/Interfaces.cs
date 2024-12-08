@@ -1,13 +1,12 @@
 namespace Task2
 {
-    public abstract class Dineable
-{
-    public abstract void ServeDinner(string carId);
-}
+    public interface IDineable
+    {
+        void ServeFood(string passengers);
+    }
 
-public abstract class Refuelable
-{
-    public abstract void Refuel(string carId);
+    public interface IRefuelable
+    {
+        void Refuel(string fuelType);
+    }
 }
-}
-

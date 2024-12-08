@@ -1,43 +1,99 @@
-using Task1;
 using Task2;
-
 namespace Task3
 {
-    public class CarStation
+    public abstract class CarStation
     {
-        private Dineable diningService;
-        private Refuelable refuelingService;
-        private IQueue<Car> carQueue;
+        public string Name { get; set; }
+    }
 
-        public CarStation(Dineable diningService, Refuelable refuelingService)
-        {
-            this.diningService = diningService;
-            this.refuelingService = refuelingService;
-            this.carQueue = new QueueT1<Car>();
-        }
+    public class PeopleGasStation : CarStation, IRefuelable, IDineable
+    {
+        public PeopleGasStation() { Name = "People Gas Station"; }
 
-        public void AddCar(Car car)
+        public void ServeFood(string passengers)
         {
-            carQueue.Add(car);
-        }
-
-        public void ServeCars()
-        {
-            while (!carQueue.isEmpty())
+            if (passengers == "PEOPLE")
             {
-                Car currentCar = carQueue.Delete();
+                Console.WriteLine("Serving food at People Gas Station.");
+            }
+            else
+            {
+                Console.WriteLine("This station only serves food to people.");
+            }
+        }
 
-                if (currentCar.NeedsDinner)
-                {
-                    diningService.ServeDinner(currentCar.CarId);
-                }
+        public void Refuel(string fuelType)
+        {
+            if (fuelType == "GAS")
+            {
+                Console.WriteLine("Refueling at People Gas Station with Gas.");
+            }
+            else
+            {
+                Console.WriteLine("This station doesn't provide Electric fueling.");
+            }
+        }
+    }
 
-                if (currentCar.NeedsRefuel)
-                {
-                    refuelingService.Refuel(currentCar.CarId);
-                }
+    public class PeopleElectricStation : CarStation, IRefuelable, IDineable
+    {
+        public PeopleElectricStation() { Name = "People Electric Station"; }
 
-                Console.WriteLine($"Car {currentCar.CarId} served and removed from the queue.");
+        public void ServeFood(string passengers)
+        {
+            if (passengers == "PEOPLE")
+            {
+                Console.WriteLine("Serving food at People Electric Station.");
+            }
+            else
+            {
+                Console.WriteLine("This station only serves food to people.");
+            }
+        }
+
+        public void Refuel(string fuelType)
+        {
+            if (fuelType == "ELECTRIC")
+            {
+                Console.WriteLine("Refueling at People Electric Station with Electric.");
+            }
+            else
+            {
+                Console.WriteLine("This station doesn't provide Gas fueling.");
+            }
+        }
+    }
+
+    public class RobotGasStation : CarStation, IRefuelable
+    {
+        public RobotGasStation() { Name = "Robot Gas Station"; }
+
+        public void Refuel(string fuelType)
+        {
+            if (fuelType == "GAS")
+            {
+                Console.WriteLine("Refueling at Robot Gas Station with Gas.");
+            }
+            else
+            {
+                Console.WriteLine("This station doesn't provide Electric fueling.");
+            }
+        }
+    }
+
+    public class RobotElectricStation : CarStation, IRefuelable
+    {
+        public RobotElectricStation() { Name = "Robot Electric Station"; }
+
+        public void Refuel(string fuelType)
+        {
+            if (fuelType == "ELECTRIC")
+            {
+                Console.WriteLine("Refueling at Robot Electric Station with Electric.");
+            }
+            else
+            {
+                Console.WriteLine("This station doesn't provide Gas fueling.");
             }
         }
     }
