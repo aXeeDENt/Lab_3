@@ -1,5 +1,7 @@
 using System;
-public class PeopleDinner : Dineable
+namespace Task2
+{
+    public class PeopleDinner : Dineable
 {
     private static int peopleCount = 0;
 
@@ -38,4 +40,6 @@ public class ElectricStation : Refuelable
         electricCarCount++;
         Console.WriteLine($"Refueling electric car {carId}. Total refueled: {electricCarCount}");
     }
+}
+
 }
