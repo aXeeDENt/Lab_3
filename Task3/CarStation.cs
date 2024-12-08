@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+using Task1;
 using Task2;
 
 namespace Task3
@@ -8,26 +7,25 @@ namespace Task3
     {
         private Dineable diningService;
         private Refuelable refuelingService;
-        private Queue<Car> queue;
+        private IQueue<Car> carQueue;
 
         public CarStation(Dineable diningService, Refuelable refuelingService)
         {
             this.diningService = diningService;
             this.refuelingService = refuelingService;
-            this.queue = new Queue<Car>();
+            this.carQueue = new QueueT1<Car>();
         }
 
         public void AddCar(Car car)
         {
-            queue.Enqueue(car);
-            Console.WriteLine($"Car {car.CarId} added to the queue.");
+            carQueue.Add(car);
         }
 
         public void ServeCars()
         {
-            while (queue.Count > 0)
+            while (!carQueue.isEmpty())
             {
-                Car currentCar = queue.Dequeue();
+                Car currentCar = carQueue.Delete();
 
                 if (currentCar.NeedsDinner)
                 {

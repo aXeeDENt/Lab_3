@@ -1,9 +1,12 @@
-using System;
-public interface IQueue<T>
+namespace Task1
 {
-    void Add(T item);
-    T Delete();
-    T Choose();
-    bool isEmpty();
-    int Size();
+    using System;
+    public interface IQueue<T>
+    {
+        void Add(T item);
+        T Delete();
+        T Choose();
+        bool isEmpty();
+        int Size();
+    }
 }
