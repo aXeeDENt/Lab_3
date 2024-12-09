@@ -1,16 +1,33 @@
 ﻿using System;
-using System.Threading.Tasks;
-using Task4;
-using Task3;
+using System.IO;
+using Task5; 
 
 namespace Task5
 {
     class Program
     {
-        static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
-            // Start the task scheduler to read and serve cars concurrently
-            await TaskScheduler.StartTasks();
+            Console.WriteLine("Starting the car management system...");
+
+            CheckAndProcessExistingCarFiles();
+
+            CarStationManager.MonitorQueueDirectory();
+        }
+
+        private static void CheckAndProcessExistingCarFiles()
+        {
+            var queueDirectory = @"C:\Users\user\Documents\MyCSharpProjects\OOP_Labs\Lab_3\queue";
+            if (Directory.Exists(queueDirectory))
+            {
+                var carFiles = Directory.GetFiles(queueDirectory, "*.json");
+
+                foreach (var file in carFiles)
+                {
+                    Console.WriteLine($"Processing existing car file: {file}");
+                    CarStationManager.ProcessCarFile(file); 
+                }
+            }
         }
     }
 }

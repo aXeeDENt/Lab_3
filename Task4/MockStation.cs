@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 using Task3;
 using Task2;
 
-class MockCarStation : CarStation, IRefuelable, IDineable
+public class MockCarStation : CarStation, IRefuelable, IDineable
 {
     private readonly Action<string> onDine;
     private readonly Action<string> onRefuel;
@@ -19,9 +20,28 @@ class MockCarStation : CarStation, IRefuelable, IDineable
         Console.WriteLine($"MockCarStation {Name}: ServeFood called with passengers: {passengers}");
         onDine?.Invoke(Name);
     }
+
     public void Refuel(string fuelType)
     {
         Console.WriteLine($"MockCarStation {Name}: Refuel called with fuel type: {fuelType}");
         onRefuel?.Invoke(Name);
+    }
+
+    // Implement the abstract ServeCars method
+    public override void ServeCars()
+    {
+        while (CarsQueue.Count > 0)
+        {
+            var car = CarsQueue.Dequeue();
+            if (car.NeedsDinner)
+            {
+                ServeFood(car.Passengers);
+            }
+            else
+            {
+                Refuel(car.FuelType);
+            }
+            Console.WriteLine($"MockCarStation {Name}: Car {car.CarId} served.");
+        }
     }
 }

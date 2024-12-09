@@ -1,63 +1,81 @@
 using System;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using Task4;
-using Task3;
+using System.Text.Json;
+using Task3; 
 
 namespace Task5
 {
-    public class TaskScheduler
+    public class CarStationManager
     {
-        private static readonly string folderPath = @"C:\Documents\MyCSharp\OOP_Labs\Lab_3\queue";  // Path to the folder where JSON files are stored
-        private static readonly int readInterval = 5 * 1000; // Interval for reading files in milliseconds (5 seconds)
-        private static readonly int serveInterval = 5 * 1000; // Interval for serving cars in milliseconds (5 seconds)
+        private static readonly string QueueDirectory = @"C:\Users\user\Documents\MyCSharpProjects\OOP_Labs\Lab_3\queue";
+        private static readonly string PeopleGasDirectory = @"C:\Users\user\Documents\MyCSharpProjects\OOP_Labs\Lab_3\carstations\peopleGas";
+        private static readonly string PeopleElectricDirectory = @"C:\Users\user\Documents\MyCSharpProjects\OOP_Labs\Lab_3\carstations\peopleElectric";
+        private static readonly string RobotGasDirectory = @"C:\Users\user\Documents\MyCSharpProjects\OOP_Labs\Lab_3\carstations\robotGas";
+        private static readonly string RobotElectricDirectory = @"C:\Users\user\Documents\MyCSharpProjects\OOP_Labs\Lab_3\carstations\robotElectric";
 
-        private static CarStation carStation = new CarStation();
-
-        public static async Task ReadCarsTask()
+        public static void MonitorQueueDirectory()
         {
-            while (true)
+            var watcher = new FileSystemWatcher(QueueDirectory)
             {
-                // Read all JSON files in the folder
-                string[] files = Directory.GetFiles(folderPath, "*.json");
+                Filter = "*.json",
+                EnableRaisingEvents = true,
+                NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite
+            };
 
-                foreach (var file in files)
+            watcher.Created += OnNewCarFileDetected;
+            watcher.EnableRaisingEvents = true;
+
+            Console.WriteLine($"Monitoring directory: {QueueDirectory}");
+            Console.ReadLine();
+        }
+
+        public static void OnNewCarFileDetected(object sender, FileSystemEventArgs e)
+        {
+            Console.WriteLine($"New car file detected: {e.FullPath}");
+            ProcessCarFile(e.FullPath);
+        }
+
+        public static void ProcessCarFile(string filePath)
+        {
+            try
+            {
+                var carJson = File.ReadAllText(filePath);
+
+                var car = JsonSerializer.Deserialize<Car>(carJson);
+
+                Console.WriteLine($"Processing car: ID={car.CarId}, Type={car.FuelType}, Passengers={car.Passengers}, Consumption={car.Consumption}");
+
+                string destinationDirectory = GetDestinationDirectory(car);
+
+                if (destinationDirectory != null)
                 {
-                    // Simulate reading car data from JSON file (you can implement actual JSON deserialization here)
-                    string carData = File.ReadAllText(file);
-                    Car car = new Car("Model", "Make");  // This is a placeholder. Replace with actual deserialization.
-
-                    // Add the car to the CarStation
-                    carStation.AddCar(car);
-                    Console.WriteLine($"Added car from {file}");
+                    var destinationPath = Path.Combine(destinationDirectory, Path.GetFileName(filePath));
+                    File.Move(filePath, destinationPath);
+                    Console.WriteLine($"Moved car file to the car station: {destinationPath}");
                 }
-
-                // Wait for the next reading interval
-                await Task.Delay(readInterval);
+                else
+                {
+                    Console.WriteLine("No matching car station found for this car.");
+                }
             }
-        }
-
-        public static async Task ServeCarsTask()
-        {
-            while (true)
+            catch (Exception ex)
             {
-                // Serve the cars
-                carStation.ServeCars();
-                
-                // Wait for the next serving interval
-                await Task.Delay(serveInterval);
+                Console.WriteLine($"Error processing car file: {ex.Message}");
             }
         }
 
-        public static async Task StartTasks()
+        private static string GetDestinationDirectory(Car car)
         {
-            // Start the tasks for reading cars and serving cars
-            var readTask = Task.Run(() => ReadCarsTask());
-            var serveTask = Task.Run(() => ServeCarsTask());
+            if (car.Passengers == "PEOPLE" && car.FuelType == "GAS")
+                return PeopleGasDirectory;
+            if (car.Passengers == "PEOPLE" && car.FuelType == "ELECTRIC")
+                return PeopleElectricDirectory;
+            if (car.Passengers == "ROBOTS" && car.FuelType == "GAS")
+                return RobotGasDirectory;
+            if (car.Passengers == "ROBOTS" && car.FuelType == "ELECTRIC")
+                return RobotElectricDirectory;
 
-            // Wait for both tasks to complete
-            await Task.WhenAny(readTask, serveTask);
+            return null; 
         }
     }
 }

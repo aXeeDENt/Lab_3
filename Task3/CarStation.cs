@@ -1,58 +1,75 @@
-using Task2;
+using System;
+using System.Collections.Generic;
+
 namespace Task3
 {
     public abstract class CarStation
     {
         public string Name { get; set; }
+        protected Queue<Car> CarsQueue { get; } = new Queue<Car>();
+
+        public void AddCar(Car car)
+        {
+            CarsQueue.Enqueue(car);
+            Console.WriteLine($"Car {car.CarId} added to {Name} queue.");
+        }
+
+        public abstract void ServeCars();
     }
 
-    public class PeopleGasStation : CarStation, IRefuelable, IDineable
+    public class PeopleGasStation : CarStation
     {
         public PeopleGasStation() { Name = "People Gas Station"; }
 
-        public void ServeFood(string passengers)
+        public override void ServeCars()
         {
-            Console.WriteLine("Serving food at People Gas Station.");
-        }
-
-        public void Refuel(string fuelType)
-        {
-            Console.WriteLine($"Refueling at People Gas Station with {fuelType}.");
+            while (CarsQueue.Count > 0)
+            {
+                var car = CarsQueue.Dequeue();
+                Console.WriteLine($"Serving {car.CarId} at {Name} (Gas Refuel)");
+            }
         }
     }
 
-    public class PeopleElectricStation : CarStation, IRefuelable, IDineable
+    public class PeopleElectricStation : CarStation
     {
         public PeopleElectricStation() { Name = "People Electric Station"; }
 
-        public void ServeFood(string passengers)
+        public override void ServeCars()
         {
-            Console.WriteLine("Serving food at People Electric Station.");
-        }
-
-        public void Refuel(string fuelType)
-        {
-            Console.WriteLine($"Refueling at People Electric Station with {fuelType}.");
+            while (CarsQueue.Count > 0)
+            {
+                var car = CarsQueue.Dequeue();
+                Console.WriteLine($"Serving {car.CarId} at {Name} (Electric Refuel)");
+            }
         }
     }
 
-    public class RobotGasStation : CarStation, IRefuelable
+    public class RobotGasStation : CarStation
     {
         public RobotGasStation() { Name = "Robot Gas Station"; }
 
-        public void Refuel(string fuelType)
+        public override void ServeCars()
         {
-            Console.WriteLine($"Refueling at Robot Gas Station with {fuelType}.");
+            while (CarsQueue.Count > 0)
+            {
+                var car = CarsQueue.Dequeue();
+                Console.WriteLine($"Serving {car.CarId} at {Name} (Gas Refuel)");
+            }
         }
     }
 
-    public class RobotElectricStation : CarStation, IRefuelable
+    public class RobotElectricStation : CarStation
     {
         public RobotElectricStation() { Name = "Robot Electric Station"; }
 
-        public void Refuel(string fuelType)
+        public override void ServeCars()
         {
-            Console.WriteLine($"Refueling at Robot Electric Station with {fuelType}.");
+            while (CarsQueue.Count > 0)
+            {
+                var car = CarsQueue.Dequeue();
+                Console.WriteLine($"Serving {car.CarId} at {Name} (Electric Refuel)");
+            }
         }
     }
 }
