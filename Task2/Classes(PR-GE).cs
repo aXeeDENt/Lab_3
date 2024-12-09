@@ -32,9 +32,9 @@ namespace Task2
 
     public class GasStation : IRefuelable
     {
-        public void Refuel(string type)
+        public void Refuel(string fuelType)
         {
-            if (type == "GAS")
+            if (fuelType == "GAS")
             {
                 Console.WriteLine("Refueling with Gas.");
             }
@@ -47,9 +47,9 @@ namespace Task2
 
     public class ElectricStation : IRefuelable
     {
-        public void Refuel(string type)
+        public void Refuel(string fuelType)
         {
-            if (type == "ELECTRIC")
+            if (fuelType == "ELECTRIC")
             {
                 Console.WriteLine("Refueling with Electric.");
             }

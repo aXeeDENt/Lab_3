@@ -1,6 +1,4 @@
 ﻿using System.Diagnostics;
-using Task2;  // Assuming Task2 is the namespace where CarStation classes are defined.
-
 namespace Task2
 {
     class TestCars

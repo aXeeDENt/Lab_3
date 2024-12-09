@@ -1,6 +1,4 @@
-﻿using System;
-using Task2;
-using Task3;
+﻿using Task2;
 
 namespace Task3
 {
@@ -9,18 +7,18 @@ namespace Task3
         public static void Main(string[] args)
         {
             // Creating station instances
-            var peopleGasStation = new CarStation(new GasStation(), new PeopleDinner());
-            var peopleElectricStation = new CarStation(new ElectricStation(), new PeopleDinner());
-            var robotGasStation = new CarStation(new GasStation(), new RobotDinner());
-            var robotElectricStation = new CarStation(new ElectricStation(), new RobotDinner());
+            var peopleGasStation = new PeopleGasStation();
+            var peopleElectricStation = new PeopleElectricStation();
+            var robotGasStation = new RobotGasStation();
+            var robotElectricStation = new RobotElectricStation();
 
             // Creating cars with different types and passengers
-            var car1 = new Car("Car1", true, true, "GAS", "ROBOTS");  // Needs both dining and gas refuel
-            var car2 = new Car("Car2", false, true, "ELECTRIC", "PEOPLE");  // Needs only electric refuel
-            var car3 = new Car("Car3", true, false, "ELECTRIC", "PEOPLE"); // Needs dining only
-            var car4 = new Car("Car4", false, false, "GAS", "PEOPLE");    // Needs neither
+            var car1 = new Car("Car1", true, "GAS", "ROBOTS");  // Needs both dining and gas refuel
+            var car2 = new Car("Car2", false, "ELECTRIC", "PEOPLE");  // Needs only electric refuel
+            var car3 = new Car("Car3", true, "ELECTRIC", "PEOPLE"); // Needs dining only
+            var car4 = new Car("Car4", false, "GAS", "PEOPLE");    // Needs neither
 
-            // Testing with different stations
+            // Testing car routing for each station
             TestStation(peopleGasStation, car1);
             TestStation(peopleElectricStation, car2);
             TestStation(robotGasStation, car3);
@@ -29,8 +27,20 @@ namespace Task3
 
         private static void TestStation(CarStation station, Car car)
         {
-            Console.WriteLine($"\nTesting {station.GetType().Name}:");
-            station.AddCar(car);
+            Console.WriteLine($"\nTesting {station.Name} with {car.CarId}:");
+
+            if (car.NeedsDinner && station is IDineable dineableStation)
+            {
+                Console.WriteLine($"{car.CarId} needs food.");
+                dineableStation.ServeFood(car.Passengers);
+            }
+
+            if (station is IRefuelable refuelableStation)
+            {
+                Console.WriteLine($"{car.CarId} needs refueling.");
+                refuelableStation.Refuel(car.FuelType);
+            }
+
         }
     }
 }

@@ -12,26 +12,12 @@ namespace Task3
 
         public void ServeFood(string passengers)
         {
-            if (passengers == "PEOPLE")
-            {
-                Console.WriteLine("Serving food at People Gas Station.");
-            }
-            else
-            {
-                Console.WriteLine("This station only serves food to people.");
-            }
+            Console.WriteLine("Serving food at People Gas Station.");
         }
 
         public void Refuel(string fuelType)
         {
-            if (fuelType == "GAS")
-            {
-                Console.WriteLine("Refueling at People Gas Station with Gas.");
-            }
-            else
-            {
-                Console.WriteLine("This station doesn't provide Electric fueling.");
-            }
+            Console.WriteLine($"Refueling at People Gas Station with {fuelType}.");
         }
     }
 
@@ -41,26 +27,12 @@ namespace Task3
 
         public void ServeFood(string passengers)
         {
-            if (passengers == "PEOPLE")
-            {
-                Console.WriteLine("Serving food at People Electric Station.");
-            }
-            else
-            {
-                Console.WriteLine("This station only serves food to people.");
-            }
+            Console.WriteLine("Serving food at People Electric Station.");
         }
 
         public void Refuel(string fuelType)
         {
-            if (fuelType == "ELECTRIC")
-            {
-                Console.WriteLine("Refueling at People Electric Station with Electric.");
-            }
-            else
-            {
-                Console.WriteLine("This station doesn't provide Gas fueling.");
-            }
+            Console.WriteLine($"Refueling at People Electric Station with {fuelType}.");
         }
     }
 
@@ -70,14 +42,7 @@ namespace Task3
 
         public void Refuel(string fuelType)
         {
-            if (fuelType == "GAS")
-            {
-                Console.WriteLine("Refueling at Robot Gas Station with Gas.");
-            }
-            else
-            {
-                Console.WriteLine("This station doesn't provide Electric fueling.");
-            }
+            Console.WriteLine($"Refueling at Robot Gas Station with {fuelType}.");
         }
     }
 
@@ -87,14 +52,7 @@ namespace Task3
 
         public void Refuel(string fuelType)
         {
-            if (fuelType == "ELECTRIC")
-            {
-                Console.WriteLine("Refueling at Robot Electric Station with Electric.");
-            }
-            else
-            {
-                Console.WriteLine("This station doesn't provide Gas fueling.");
-            }
+            Console.WriteLine($"Refueling at Robot Electric Station with {fuelType}.");
         }
     }
 }
