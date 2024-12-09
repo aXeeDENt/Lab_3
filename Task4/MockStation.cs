@@ -16,13 +16,12 @@ class MockCarStation : CarStation, IRefuelable, IDineable
 
     public void ServeFood(string passengers)
     {
-        Console.WriteLine($"Mock station {Name} serving food for {passengers}.");
-        onDine(Name);
+        Console.WriteLine($"MockCarStation {Name}: ServeFood called with passengers: {passengers}");
+        onDine?.Invoke(Name);
     }
-
     public void Refuel(string fuelType)
     {
-        Console.WriteLine($"Mock station {Name} refueling with {fuelType}.");
-        onRefuel(Name);
+        Console.WriteLine($"MockCarStation {Name}: Refuel called with fuel type: {fuelType}");
+        onRefuel?.Invoke(Name);
     }
 }

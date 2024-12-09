@@ -24,71 +24,65 @@ namespace Task4
 
         public string RouteCar(Car car)
         {
-            Console.WriteLine($"Routing {car.CarId}...");
-            
-            // First, check for dining needs
-            if (car.NeedsDinner)
-            {
-                Console.WriteLine($"Car {car.CarId} needs dinner.");
-                foreach (var station in Stations)
-                {
-                    Console.WriteLine($"Checking station: {station.Name}");
-                    if (station is IDineable dineableStation)
-                    {
-                        if (car.Passengers == "PEOPLE" && car.FuelType == "GAS" && station is PeopleGasStation)
-                        {
-                            Console.WriteLine($"{car.CarId} is dining at People Gas Station.");
-                            dineableStation.ServeFood(car.Passengers);
-                            return "People Gas Station";
-                        }
-                        else if (car.Passengers == "PEOPLE" && car.FuelType == "ELECTRIC" && station is PeopleElectricStation)
-                        {
-                            Console.WriteLine($"{car.CarId} is dining at People Electric Station.");
-                            dineableStation.ServeFood(car.Passengers);
-                            return "People Electric Station";
-                        }
-                        else if (car.Passengers == "ROBOTS" && car.FuelType == "GAS" && station is RobotGasStation)
-                        {
-                            Console.WriteLine($"{car.CarId} is dining at Robot Gas Station.");
-                            dineableStation.ServeFood(car.Passengers);
-                            return "Robot Gas Station";
-                        }
-                        else if (car.Passengers == "ROBOTS" && car.FuelType == "ELECTRIC" && station is RobotElectricStation)
-                        {
-                            Console.WriteLine($"{car.CarId} is dining at Robot Electric Station.");
-                            dineableStation.ServeFood(car.Passengers);
-                            return "Robot Electric Station";
-                        }
-                    }
-                }
-            }
-
-            // Then, refuel the car
+            // Handle cars that need dining and refueling
             foreach (var station in Stations)
             {
-                Console.WriteLine($"Checking refuel at {station.Name}");
-                if (car.FuelType == "GAS" && (station is PeopleGasStation || station is RobotGasStation))
+                if (station.Name == "People Gas Station" && car.NeedsDinner && car.Passengers == "PEOPLE" && car.FuelType == "GAS")
                 {
-                    if (station is IRefuelable refuelableStation)
-                    {
-                        Console.WriteLine($"{car.CarId} is refueling at {station.Name}.");
-                        refuelableStation.Refuel(car.FuelType);
-                        return $"{station.Name}";
-                    }
+                    ((IDineable)station).ServeFood(car.Passengers);
+                    ((IRefuelable)station).Refuel(car.FuelType);
+                    return "People Gas Station";
                 }
-                else if (car.FuelType == "ELECTRIC" && (station is PeopleElectricStation || station is RobotElectricStation))
+                else if (station.Name == "People Electric Station" && car.NeedsDinner && car.Passengers == "PEOPLE" && car.FuelType == "ELECTRIC")
                 {
-                    if (station is IRefuelable refuelableStation)
-                    {
-                        Console.WriteLine($"{car.CarId} is refueling at {station.Name}.");
-                        refuelableStation.Refuel(car.FuelType);
-                        return $"{station.Name}";
-                    }
+                    ((IDineable)station).ServeFood(car.Passengers);
+                    ((IRefuelable)station).Refuel(car.FuelType);
+                    return "People Electric Station";
+                }
+                else if (station.Name == "Robot Gas Station" && car.NeedsDinner && car.Passengers == "ROBOT" && car.FuelType == "GAS")
+                {
+                    ((IDineable)station).ServeFood(car.Passengers);
+                    ((IRefuelable)station).Refuel(car.FuelType);
+                    return "Robot Gas Station";
+                }
+                else if (station.Name == "Robot Electric Station" && car.NeedsDinner && car.Passengers == "ROBOT" && car.FuelType == "ELECTRIC")
+                {
+                    ((IDineable)station).ServeFood(car.Passengers);
+                    ((IRefuelable)station).Refuel(car.FuelType);
+                    return "Robot Electric Station";
                 }
             }
 
-            return ($"{car.CarId} could not find a suitable station.");
-        }
+            // Handle cars that only need refueling
+            foreach (var station in Stations)
+            {
+                if (station.Name == "People Gas Station" && !car.NeedsDinner && 
+                ((car.Passengers == "PEOPLE") || (car.Passengers == "ROBOT")) && car.FuelType == "GAS")
+                {
+                    ((IRefuelable)station).Refuel(car.FuelType);
+                    return "People Gas Station";
+                }
+                else if (station.Name == "People Electric Station" && !car.NeedsDinner && 
+                ((car.Passengers == "PEOPLE") || (car.Passengers == "ROBOT")) && car.FuelType == "ELECTRIC")
+                {
+                    ((IRefuelable)station).Refuel(car.FuelType);
+                    return "People Electric Station";
+                }
+                else if (station.Name == "Robot Gas Station" && !car.NeedsDinner && 
+                ((car.Passengers == "ROBOT") || (car.Passengers == "PEOPLE")) && car.FuelType == "GAS")
+                {
+                    ((IRefuelable)station).Refuel(car.FuelType);
+                    return "Robot Gas Station";
+                }
+                else if (station.Name == "Robot Electric Station" && !car.NeedsDinner && 
+                ((car.Passengers == "ROBOT") || (car.Passengers == "PEOPLE")) && car.FuelType == "ELECTRIC")
+                {
+                    ((IRefuelable)station).Refuel(car.FuelType);
+                    return "Robot Electric Station";
+                }
+            }
 
+            return $"{car.CarId} could not find a suitable station.";
+        }
     }
 }

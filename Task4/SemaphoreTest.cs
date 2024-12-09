@@ -30,22 +30,27 @@ namespace Task4
             };
 
             // Test cases
-            var car1 = new Car("Car1", true, "GAS", "PEOPLE");
-            //var car2 = new Car("Car2", false, "ELECTRIC", "PEOPLE");
-            //var car3 = new Car("Car3", true, "ELECTRIC", "ROBOTS");
-            //var car4 = new Car("Car4", false, "GAS", "ROBOTS");
+            
 
-            semaphore.RouteCar(car1);
-            Debug.Assert(calledStations.Contains("People Gas Station"), "Car1 should visit People Gas Station");
+            var car1 = new Car("Car1", true, "GAS", "PEOPLE", 10);
+            var result1 = semaphore.RouteCar(car1);
+            Console.WriteLine($"Route result: {result1}");
+            Debug.Assert(result1 == "People Gas Station", "Expected result mismatch.");
 
-            // semaphore.RouteCar(car2);
-            // Debug.Assert(calledStations.Contains("People Electric Station"), "Car2 should visit People Electric Station");
+            var car2 = new Car("Car2", false, "ELECTRIC", "PEOPLE", 11);
+            var result2 = semaphore.RouteCar(car2);
+            Console.WriteLine($"Route result: {result2}");
+            Debug.Assert((result2 == "People Electric Station") || (result2 == "Robot Electric Station"), "Expected result mismatch.");
 
-            // semaphore.RouteCar(car3);
-            // Debug.Assert(calledStations.Contains("Robot Electric Station"), "Car3 should visit Robot Electric Station");
+            var car3 = new Car("Car3", true, "ELECTRIC", "ROBOT", 5);
+            var result3 = semaphore.RouteCar(car3);
+            Console.WriteLine($"Route result: {result3}");
+            Debug.Assert(result3 == "Robot Electric Station", "Expected result mismatch.");
 
-            // semaphore.RouteCar(car4);
-            // Debug.Assert(calledStations.Contains("Robot Gas Station"), "Car4 should visit Robot Gas Station");
+            var car4 = new Car("Car4", false, "GAS", "ROBOT", 52);
+            var result4 = semaphore.RouteCar(car4);
+            Console.WriteLine($"Route result: {result4}");
+            Debug.Assert((result4 == "People Gas Station") || (result4 == "Robot Gas Station"), "Expected result mismatch.");
 
             Console.WriteLine("All tests passed!");
         }

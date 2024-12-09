@@ -13,10 +13,10 @@ namespace Task3
             var robotElectricStation = new RobotElectricStation();
 
             // Creating cars with different types and passengers
-            var car1 = new Car("Car1", true, "GAS", "ROBOTS");  // Needs both dining and gas refuel
-            var car2 = new Car("Car2", false, "ELECTRIC", "PEOPLE");  // Needs only electric refuel
-            var car3 = new Car("Car3", true, "ELECTRIC", "PEOPLE"); // Needs dining only
-            var car4 = new Car("Car4", false, "GAS", "PEOPLE");    // Needs neither
+            var car1 = new Car("Car1", true, "GAS", "ROBOTS", 10);  // Needs both dining and gas refuel
+            var car2 = new Car("Car2", false, "ELECTRIC", "PEOPLE", 11);  // Needs only electric refuel
+            var car3 = new Car("Car3", true, "ELECTRIC", "PEOPLE", 5); // Needs dining only
+            var car4 = new Car("Car4", false, "GAS", "PEOPLE", 50);    // Needs neither
 
             // Testing car routing for each station
             TestStation(peopleGasStation, car1);
