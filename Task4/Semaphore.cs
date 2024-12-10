@@ -19,32 +19,45 @@ namespace Task4
         }
 
         public void RouteCar(Car car)
+{
+    foreach (var station in Stations)
+    {
+        if (station.Name.Contains("People", StringComparison.OrdinalIgnoreCase) &&
+            car.passengers.Equals("PEOPLE", StringComparison.OrdinalIgnoreCase) &&
+            car.type.Equals("GAS", StringComparison.OrdinalIgnoreCase) &&
+            station is PeopleGasStation)
         {
-            foreach (var station in Stations)
-            {
-                if (station.Name.Contains("People") && car.Passengers == "PEOPLE" && car.FuelType == "GAS" && station is PeopleGasStation)
-                {
-                    station.AddCar(car);
-                    return;
-                }
-                else if (station.Name.Contains("Robot") && car.Passengers == "ROBOT" && car.FuelType == "GAS" && station is RobotGasStation)
-                {
-                    station.AddCar(car);
-                    return;
-                }
-                else if (station.Name.Contains("People") && car.Passengers == "PEOPLE" && car.FuelType == "ELECTRIC" && station is PeopleElectricStation)
-                {
-                    station.AddCar(car);
-                    return;
-                }
-                else if (station.Name.Contains("Robot") && car.Passengers == "ROBOT" && car.FuelType == "ELECTRIC" && station is RobotElectricStation)
-                {
-                    station.AddCar(car);
-                    return;
-                }
-            }
-
-            Console.WriteLine($"Car {car.CarId} could not be routed to any station.");
+            station.AddCar(car);
+            return;
         }
+        else if (station.Name.Contains("Robot", StringComparison.OrdinalIgnoreCase) &&
+                 car.passengers.Equals("ROBOTS", StringComparison.OrdinalIgnoreCase) &&
+                 car.type.Equals("GAS", StringComparison.OrdinalIgnoreCase) &&
+                 station is RobotGasStation)
+        {
+            station.AddCar(car);
+            return;
+        }
+        else if (station.Name.Contains("People", StringComparison.OrdinalIgnoreCase) &&
+                 car.passengers.Equals("PEOPLE", StringComparison.OrdinalIgnoreCase) &&
+                 car.type.Equals("ELECTRIC", StringComparison.OrdinalIgnoreCase) &&
+                 station is PeopleElectricStation)
+        {
+            station.AddCar(car);
+            return;
+        }
+        else if (station.Name.Contains("Robot", StringComparison.OrdinalIgnoreCase) &&
+                 car.passengers.Equals("ROBOTS", StringComparison.OrdinalIgnoreCase) &&
+                 car.type.Equals("ELECTRIC", StringComparison.OrdinalIgnoreCase) &&
+                 station is RobotElectricStation)
+        {
+            station.AddCar(car);
+            return;
+        }
+    }
+
+    Console.WriteLine($"Car {car.id} could not be routed to any station.");
+}
+
     }
 }

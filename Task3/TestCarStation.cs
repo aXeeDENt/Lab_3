@@ -11,10 +11,10 @@ namespace Task3
             var robotGasStation = new RobotGasStation();
             var robotElectricStation = new RobotElectricStation();
 
-            var car1 = new Car("Car1", true, "GAS", "ROBOTS", 10);  
-            var car2 = new Car("Car2", false, "ELECTRIC", "PEOPLE", 11);  
-            var car3 = new Car("Car3", true, "ELECTRIC", "PEOPLE", 5); 
-            var car4 = new Car("Car4", false, "GAS", "PEOPLE", 50);    
+            var car1 = new Car(1, "GAS", "ROBOTS", true, 10);  
+            var car2 = new Car(2, "ELECTRIC", "PEOPLE", false, 11);  
+            var car3 = new Car(3, "ELECTRIC", "PEOPLE", true, 5); 
+            var car4 = new Car(4, "GAS", "PEOPLE", false, 50);    
 
             TestStation(peopleGasStation, car1);
             TestStation(peopleElectricStation, car2);
@@ -24,18 +24,18 @@ namespace Task3
 
         private static void TestStation(CarStation station, Car car)
         {
-            Console.WriteLine($"\nTesting {station.Name} with {car.CarId}:");
+            Console.WriteLine($"\nTesting {station.Name} with {car.id}:");
 
-            if (car.NeedsDinner && station is IDineable dineableStation)
+            if (car.isDining && station is IDineable dineableStation)
             {
-                Console.WriteLine($"{car.CarId} needs food.");
-                dineableStation.ServeFood(car.Passengers);
+                Console.WriteLine($"{car.id} needs food.");
+                dineableStation.ServeFood(car.passengers);
             }
 
             if (station is IRefuelable refuelableStation)
             {
-                Console.WriteLine($"{car.CarId} needs refueling.");
-                refuelableStation.Refuel(car.FuelType);
+                Console.WriteLine($"{car.id} needs refueling.");
+                refuelableStation.Refuel(car.type);
             }
 
         }

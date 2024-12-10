@@ -33,15 +33,15 @@ public class MockCarStation : CarStation, IRefuelable, IDineable
         while (CarsQueue.Count > 0)
         {
             var car = CarsQueue.Dequeue();
-            if (car.NeedsDinner)
+            if (car.isDining)
             {
-                ServeFood(car.Passengers);
+                ServeFood(car.passengers);
             }
             else
             {
-                Refuel(car.FuelType);
+                Refuel(car.type);
             }
-            Console.WriteLine($"MockCarStation {Name}: Car {car.CarId} served.");
+            Console.WriteLine($"MockCarStation {Name}: Car {car.id} served.");
         }
     }
 }

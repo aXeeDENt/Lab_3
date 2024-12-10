@@ -6,12 +6,12 @@ namespace Task3
     public abstract class CarStation
     {
         public string Name { get; set; }
-        protected Queue<Car> CarsQueue { get; } = new Queue<Car>();
+        public Queue<Car> CarsQueue { get; } = new Queue<Car>();
 
         public void AddCar(Car car)
         {
             CarsQueue.Enqueue(car);
-            Console.WriteLine($"Car {car.CarId} added to {Name} queue.");
+            Console.WriteLine($"Car {car.id} added to {Name} queue.");
         }
 
         public abstract void ServeCars();
@@ -26,7 +26,7 @@ namespace Task3
             while (CarsQueue.Count > 0)
             {
                 var car = CarsQueue.Dequeue();
-                Console.WriteLine($"Serving {car.CarId} at {Name} (Gas Refuel)");
+                Console.WriteLine($"Serving {car.id} at {Name} (Gas Refuel)");
             }
         }
     }
@@ -40,7 +40,7 @@ namespace Task3
             while (CarsQueue.Count > 0)
             {
                 var car = CarsQueue.Dequeue();
-                Console.WriteLine($"Serving {car.CarId} at {Name} (Electric Refuel)");
+                Console.WriteLine($"Serving {car.id} at {Name} (Electric Refuel)");
             }
         }
     }
@@ -54,7 +54,7 @@ namespace Task3
             while (CarsQueue.Count > 0)
             {
                 var car = CarsQueue.Dequeue();
-                Console.WriteLine($"Serving {car.CarId} at {Name} (Gas Refuel)");
+                Console.WriteLine($"Serving {car.id} at {Name} (Gas Refuel)");
             }
         }
     }
@@ -68,7 +68,7 @@ namespace Task3
             while (CarsQueue.Count > 0)
             {
                 var car = CarsQueue.Dequeue();
-                Console.WriteLine($"Serving {car.CarId} at {Name} (Electric Refuel)");
+                Console.WriteLine($"Serving {car.id} at {Name} (Electric Refuel)");
             }
         }
     }

@@ -1,20 +1,31 @@
+using System.Text.Json.Serialization;
+
 namespace Task3
 {
     public class Car
     {
-        public string CarId { get; set; }
-        public bool NeedsDinner { get; set; }
-        public string FuelType { get; set; }
-        public string Passengers { get; set; }
-        public int Consumption { get; set; }
+        [JsonPropertyName("id")]          // Maps the JSON 'id' field to the C# property 'id'
+        public int id { get; set; }
 
-        public Car(string carId, bool needsDinner, string fuelType, string passengers, int consumption)
+        [JsonPropertyName("type")]       // Maps the JSON 'type' field to the C# property 'type'
+        public string type { get; set; }
+
+        [JsonPropertyName("passengers")] // Maps the JSON 'passengers' field to the C# property 'passengers'
+        public string passengers { get; set; }
+
+        [JsonPropertyName("isDining")]   // Maps the JSON 'isDining' field to the C# property 'isDining'
+        public bool isDining { get; set; }
+
+        [JsonPropertyName("consumption")] // Maps the JSON 'consumption' field to the C# property 'consumption'
+        public int consumption { get; set; }
+
+        public Car(int Id, string Type, string Passengers, bool IsDining, int Consumption)
         {
-            CarId = carId;
-            NeedsDinner = needsDinner;
-            FuelType = fuelType;
-            Passengers = passengers;
-            Consumption = consumption;
+            id = Id;
+            type = Type;
+            passengers = Passengers;
+            isDining = IsDining;
+            consumption = Consumption;
         }
     }
 }

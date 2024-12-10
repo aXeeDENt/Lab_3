@@ -9,10 +9,10 @@ namespace Task4
         {
             Semaphore semaphore = new Semaphore();
 
-            Car car1 = new Car("Car1", false, "GAS", "PEOPLE", 10);
-            Car car2 = new Car("Car2", false, "ELECTRIC", "PEOPLE", 8);
-            Car car3 = new Car("Car3", false, "GAS", "ROBOT", 12);
-            Car car4 = new Car("Car4", false, "ELECTRIC", "ROBOT", 7);
+            Car car1 = new Car(1, "GAS", "PEOPLE", false, 10);
+            Car car2 = new Car(2,  "ELECTRIC", "PEOPLE",false, 8);
+            Car car3 = new Car(3,  "GAS", "ROBOT",false, 12);
+            Car car4 = new Car(4,  "ELECTRIC", "ROBOT",false, 7);
 
             semaphore.RouteCar(car1);
             semaphore.RouteCar(car2);
