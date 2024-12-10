@@ -38,52 +38,62 @@ namespace Task5
 
             Task4.Semaphore semaphore = new Task4.Semaphore();
 
-            // Process each .json file in the queue directory
-            foreach (var filePath in Directory.GetFiles(queueDir, "*.json"))
+            // Continuously process files until no files remain in the queue directory
+            while (true)
             {
-                try
+                var files = Directory.GetFiles(queueDir, "*.json");
+                if (files.Length == 0)
                 {
-                    // Read and deserialize the car JSON
-                    string carJson = File.ReadAllText(filePath);
-                    Car car = JsonSerializer.Deserialize<Car>(carJson);
+                    Console.WriteLine("No more files to process. Exiting...");
+                    break; // Exit when no more files are found
+                }
 
-                    if (car == null)
+                foreach (var filePath in files)
+                {
+                    try
                     {
-                        Console.WriteLine($"Error: File {filePath} could not be deserialized.");
-                        continue;
-                    }
+                        // Read and deserialize the car JSON
+                        string carJson = File.ReadAllText(filePath);
+                        Car car = JsonSerializer.Deserialize<Car>(carJson);
 
-                    // Route the car using Semaphore
-                    semaphore.RouteCar(car);
-
-                    // Determine the destination folder based on the car's assigned station
-                    bool carRouted = false;
-                    foreach (var station in semaphore.Stations)
-                    {
-                        if (station.CarsQueue.Contains(car))
+                        if (car == null)
                         {
-                            // Calculate delay based on car's consumption
-                            int delayTime = (car.consumption / 10) * 1000; // Convert seconds to milliseconds
-                            await Task.Delay(delayTime);
+                            Console.WriteLine($"Error: File {filePath} could not be deserialized.");
+                            continue;
+                        }
 
-                            string stationFolder = Path.Combine(stationDir, station.Name);
-                            string destinationPath = Path.Combine(stationFolder, Path.GetFileName(filePath));
+                        // Route the car using Semaphore
+                        semaphore.RouteCar(car);
 
-                            File.Move(filePath, destinationPath);
-                            Console.WriteLine($"Car {car.id} with consumption {car.consumption} moved to {station.Name} after {delayTime / 1000} seconds.");
-                            carRouted = true;
-                            break;
+                        // Determine the destination folder based on the car's assigned station
+                        bool carRouted = false;
+                        foreach (var station in semaphore.Stations)
+                        {
+                            if (station.CarsQueue.Contains(car))
+                            {
+                                // Calculate delay based on car's consumption
+                                int delayTime = (car.consumption / 10) * 1000; // Convert seconds to milliseconds
+                                await Task.Delay(delayTime);
+
+                                string stationFolder = Path.Combine(stationDir, station.Name);
+                                string destinationPath = Path.Combine(stationFolder, Path.GetFileName(filePath));
+
+                                File.Move(filePath, destinationPath);
+                                Console.WriteLine($"Car {car.id} with consumption {car.consumption} moved to {station.Name} after {delayTime / 1000} seconds.");
+                                carRouted = true;
+                                break;
+                            }
+                        }
+
+                        if (!carRouted)
+                        {
+                            Console.WriteLine($"Warning: Car {car.id} could not be routed to any station.");
                         }
                     }
-
-                    if (!carRouted)
+                    catch (Exception ex)
                     {
-                        Console.WriteLine($"Warning: Car {car.id} could not be routed to any station.");
+                        Console.WriteLine($"Error processing file {filePath}: {ex.Message}");
                     }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error processing file {filePath}: {ex.Message}");
                 }
             }
 
