@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.Json;
-using System.Threading.Tasks; // For Task.Delay
+using System.Threading.Tasks;
 using Task3;
 using Task4;
 
@@ -38,14 +38,24 @@ namespace Task5
 
             Task4.Semaphore semaphore = new Task4.Semaphore();
 
-            // Continuously process files until no files remain in the queue directory
+            // Process files until the queue is empty
             while (true)
             {
                 var files = Directory.GetFiles(queueDir, "*.json");
                 if (files.Length == 0)
                 {
-                    Console.WriteLine("No more files to process. Exiting...");
-                    break; // Exit when no more files are found
+                    Console.WriteLine("Queue is empty. Waiting for new files...");
+
+                    // Wait for a short time before checking the queue again
+                    await Task.Delay(1000);
+
+                    // Check again after waiting
+                    files = Directory.GetFiles(queueDir, "*.json");
+                    if (files.Length == 0)
+                    {
+                        Console.WriteLine("No more files to process. Exiting...");
+                        break; // Exit if the queue is still empty
+                    }
                 }
 
                 foreach (var filePath in files)
@@ -79,7 +89,7 @@ namespace Task5
                                 string destinationPath = Path.Combine(stationFolder, Path.GetFileName(filePath));
 
                                 File.Move(filePath, destinationPath);
-                                Console.WriteLine($"Car {car.id} with consumption {car.consumption} moved to {station.Name} after {delayTime / 1000} seconds.");
+                                Console.WriteLine($"Car {car.id} moved from {station.Name} after {delayTime / 1000} seconds ({car.consumption}).");
                                 carRouted = true;
                                 break;
                             }

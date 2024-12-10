@@ -1,30 +1,22 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Task5
 {
     public class Threading
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            // Thread to run generator.py
-            Thread pythonThread = new Thread(RunPythonScript);
-            
-            // Thread to run Task5.csproj
-            Thread task5Thread = new Thread(RunTask5);
+            // Create tasks for generator.py and Task5
+            Task generatorTask = Task.Run(() => RunPythonScript());
+            Task programT5Task = Task.Run(() => RunTask5());
 
-            // Start the threads
-            pythonThread.Start();
+            // Run both tasks concurrently
+            await Task.WhenAll(generatorTask, programT5Task);
 
-            // Wait for the generator.py to finish before starting Task5
-            pythonThread.Join();
-            task5Thread.Start();
-
-            // Wait for Task5 to complete
-            task5Thread.Join();
-
-            Console.WriteLine("Both threads have completed their tasks.");
+            Console.WriteLine("Both generator.py and ProgramT5 have completed.");
         }
 
         private static void RunPythonScript()
@@ -73,12 +65,12 @@ namespace Task5
         {
             try
             {
-                Console.WriteLine("Starting Task5 directly...");
+                Console.WriteLine("Starting ProgramT5...");
                 Task5.ProgramT5.Main(new string[0]).Wait();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while running Task5: {ex.Message}");
+                Console.WriteLine($"An error occurred while running ProgramT5: {ex.Message}");
             }
         }
     }
